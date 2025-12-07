@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,9 +16,19 @@ import { Label } from "@/components/ui/label";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 
 const Home = () => {
+  return Login();
+};
+
+const Login = () => {
+  const [isClient, setIsClient] = useState(false);
+  // usar sempre em client
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  if (!isClient) return null;
+
   return (
     <div className="relative min-h-screen bg-background">
-      {" "}
       {/* relative aqui */}
       {/* ModeToggle posicionado no canto superior direito */}
       <div className="absolute top-4 right-4 z-20">
@@ -76,5 +89,4 @@ const Home = () => {
     </div>
   );
 };
-
 export default Home;
