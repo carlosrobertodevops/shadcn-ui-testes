@@ -1,7 +1,9 @@
-"use client";
+// "use client";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+
+// Card
 import {
   Card,
   CardAction,
@@ -11,82 +13,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
+// Alert
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 
+// Componentes e Blocks
+// import { AlertTaskDemo } from "@/components/shadcn-studio/alert/alert-09";
+// import { Login } from "@/components/shadcn-studio/blocks/login-page-02/login-page-02";
+import { ComboboxMultipleDemo } from "@/components/shadcn-studio/combobox/combobox-10";
+
 const Home = () => {
-  return Login();
-};
-
-const Login = () => {
-  const [isClient, setIsClient] = useState(false);
-  // usar sempre em client
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-  if (!isClient) return null;
-
+  // return Login();
+  // return SSAlertDemo();
+  // return ComboboxMultipleDemo();
   return (
-    <div className="relative min-h-screen bg-background">
-      {/* relative aqui */}
-      {/* ModeToggle posicionado no canto superior direito */}
-      <div className="absolute top-4 right-4 z-20">
-        <ModeToggle />
-      </div>
-      {/* Card centralizado */}
-      <div className="flex items-center justify-center min-h-screen">
-        <Card className="w-full max-w-sm">
-          <CardHeader>
-            <CardTitle>Login to your account</CardTitle>
-            <CardDescription>
-              Enter your email below to login to your account
-            </CardDescription>
-            <CardAction>
-              <Button variant="link">Sign Up</Button>
-            </CardAction>
-          </CardHeader>
-
-          <CardContent>
-            <form>
-              <div className="flex flex-col gap-6">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="m@example.com"
-                    required
-                  />
-                </div>
-
-                <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
-                    <a
-                      href="#"
-                      className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                    >
-                      Forgot your password?
-                    </a>
-                  </div>
-                  <Input id="password" type="password" required />
-                </div>
-              </div>
-            </form>
-          </CardContent>
-
-          <CardFooter className="flex-col gap-2">
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
-            <Button variant="outline" className="w-full">
-              Login with Google
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
-    </div>
+    <div className="flex items-center justify-center min-h-screen">
+      <ComboboxMultipleDemo/>
+    <div/>
   );
 };
+
+
+
 export default Home;
