@@ -6,8 +6,9 @@ import { Separator } from "@/components/ui/separator";
 import { BorderBeam } from "@/components/ui/border-beam";
 
 import Logo from "@/components/shadcn-studio/logo";
-import AuthFullBackgroundShape from "@/assets/svg/auth-full-background-shape";
+// import AuthFullBackgroundShape from "@/assets/svg/auth-full-background-shape";
 import LoginForm from "@/components/shadcn-studio/blocks/login-page-02/login-form";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export function Login() {
     return (
@@ -48,7 +49,11 @@ export function Login() {
                     </a>
 
                     <div className="flex flex-col gap-6">
-                        <Logo className="gap-3" />
+                        {/* Logo and ModeTigle */}
+                        <div className="flex items-center gap-20">
+                            <Logo className="flex-1" />
+                            <ModeToggle className="flex-1" />
+                        </div>
 
                         <div>
                             <h2 className="mb-1.5 text-2xl font-semibold">

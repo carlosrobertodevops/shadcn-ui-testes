@@ -14,7 +14,6 @@ import { cn } from "@/lib/utils";
 
 import Logo from "@/components/shadcn-studio/logo";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { Login } from "@/components/shadcn-studio/blocks/login-page-02/login-page-02";
 
 type HeaderProps = {
     navigationData: Navigation[];
@@ -59,20 +58,20 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                     navigationClassName="md:block"
                 />
 
-                {/* ModeToggle */}
-                <ModeToggle />
-
-                {/* Login Button */}
-                <Button className="rounded-lg max-md:hidden" asChild>
-                    <a href="login-page-02">Login</a>
-                </Button>
+                {/* Desktop: show button + toggle together */}
+                <div className="hidden md:flex items-center gap-4">
+                    <ModeToggle />
+                    <Button className="rounded-lg" asChild>
+                        <a href="login-page-02">Login</a>
+                    </Button>
+                </div>
 
                 {/* Navigation for small screens */}
                 <div className="flex gap-4 md:hidden">
+                    <ModeToggle />
                     <Button className="rounded-lg" asChild>
                         <a href="#">Login</a>
                     </Button>
-                    <ModeToggle />
                     <HeroNavigation01SmallScreen
                         navigationData={navigationData}
                         screenSize={767}
