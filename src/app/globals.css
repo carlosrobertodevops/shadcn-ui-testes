@@ -2,6 +2,9 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+:root {
+  --color-smooth-200: rgba(255, 255, 255, 0.005);
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -50,33 +53,39 @@
   --color-info: var(--info);
   --color-destructive-foreground: var(--destructive-foreground);
   @keyframes skeleton {
-  to {
-    background-position: -200% 0;
+    to {
+      background-position: -200% 0;
     }
   }
   @keyframes skeleton {
-  to {
-    background-position: -200% 0;
+    to {
+      background-position: -200% 0;
     }
   }
   @keyframes skeleton {
-  to {
-    background-position: -200% 0;
+    to {
+      background-position: -200% 0;
     }
   }
   --animate-marquee-horizontal: marquee-horizontal var(--marquee-duration) infinite linear;
-  --animate-marquee-vertical: marquee-vertical var(--marquee-duration) infinite linear
-;
+  --animate-marquee-vertical: marquee-vertical var(--marquee-duration) infinite linear;
   @keyframes marquee-horizontal {
-  from {
-    transform: translateX(0);}
-  to {
-    transform: translateX(calc(-100% - var(--marquee-gap)));}}
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--marquee-gap)));
+    }
+  }
   @keyframes marquee-vertical {
-  from {
-    transform: translateY(0);}
-  to {
-    transform: translateY(calc(-100% - var(--marquee-gap)));}}}
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--marquee-gap)));
+    }
+  }
+}
 
 :root {
   --radius: 0.625rem;

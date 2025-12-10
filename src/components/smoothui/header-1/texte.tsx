@@ -1,75 +1,3 @@
-"use client";
-
-import { ExternalLink } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { AnimatedGroup } from "@/components/smoothui/shared/animated-group";
-import { AnimatedText } from "@/components/smoothui/shared/animated-text";
-import { Button } from "@/components/smoothui/shared/smoothbutton";
-import { HeroHeader } from "@/components/smoothui/shared/hero-header";
-import styles from "./hero-grid.module.css";
-
-const CELL_SIZE = 128; // px
-const COLORS = [
-  "oklch(0.72 0.2 352.53)", // blue-ish
-  "#A764FF",
-  "#4B94FD",
-  "#FD4B4E",
-  "#FF8743",
-];
-
-// getRandomColor
-function getRandomColor() {
-  return COLORS[Math.floor(Math.random() * COLORS.length)];
-}
-
-// SubGrid
-function SubGrid() {
-  const [cellColors, setCellColors] = useState<(string | null)[]>([null, null, null, null]);
-  // Add refs for leave timeouts
-  const leaveTimeouts = useRef<(NodeJS.Timeout | null)[]>([null, null, null, null]);
-  function handleHover(cellIdx: number) {
-    // Clear any pending timeout for this cell
-    const timeout = leaveTimeouts.current[cellIdx];
-    if (timeout) {
-      clearTimeout(timeout);
-      leaveTimeouts.current[cellIdx] = null;
-    }
-    setCellColors((prev) => prev.map((c, i) => (i === cellIdx ? getRandomColor() : c)));
-  }
-  function handleLeave(cellIdx: number) {
-    // Add a small delay before removing the color
-    leaveTimeouts.current[cellIdx] = setTimeout(() => {
-      setCellColors((prev) => prev.map((c, i) => (i === cellIdx ? null : c)));
-      leaveTimeouts.current[cellIdx] = null;
-    }, 120);
-  }
-  // Cleanup on unmount
-  useEffect(
-    () => () => {
-      leaveTimeouts.current.forEach((t) => t && clearTimeout(t));
-    },
-    []
-  );
-  return (
-    <div className={styles.subgrid} style={{ pointerEvents: "none" }}>
-      {[0, 1, 2, 3].map((cellIdx) => (
-        <button
-          className={styles.cell}
-          key={cellIdx}
-          onMouseEnter={() => handleHover(cellIdx)}
-          onMouseLeave={() => handleLeave(cellIdx)}
-          style={{
-            background: cellColors[cellIdx] || "transparent",
-            pointerEvents: "auto",
-          }}
-          type="button"
-        />
-      ))}
-    </div>
-  );
-}
-
-// teste
 function InteractiveGrid() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [grid, setGrid] = useState({ columns: 0, rows: 0 });
@@ -174,11 +102,11 @@ function InteractiveGrid() {
         transparent 3%
       ),
       linear-gradient(to right,
-        rgba(0,0,0,0.1) 1px,
+        rgba(0,0,0,0.06) 1px,
         transparent 1px
       ),
       linear-gradient(to bottom,
-        rgba(0,0,0,0.1) 1px,
+        rgba(0,0,0,0.06) 1px,
         transparent 1px
       )
     `,
@@ -218,40 +146,3 @@ function InteractiveGrid() {
     </div>
   );
 }
-
-// HeroGrid
-export function HeroGrid() {
-  return (
-    <div className="relative">
-      <HeroHeader />
-      <main>
-        <section className="relative overflow-hidden py-36">
-          {/* Interactive animated grid background */}
-          <InteractiveGrid />
-          <AnimatedGroup
-            className="pointer-events-none flex flex-col items-center gap-6 text-center"
-            preset="blur-slide"
-          >
-            <div>
-              <AnimatedText as="h1" className="mb-6 text-pretty font-bold text-2xl tracking-tight lg:text-5xl">
-                Build your next project with <span className="text-brand">Smoothui</span>
-              </AnimatedText>
-              <AnimatedText as="p" className="mx-auto max-w-3xl text-muted-foreground lg:text-xl" delay={0.15}>
-                Smoothui gives you the building blocks to create stunning, animated interfaces in minutes.
-              </AnimatedText>
-            </div>
-            <AnimatedGroup className="pointer-events-auto mt-6 flex justify-center gap-3" preset="slide">
-              <Button className="shadow-sm transition-shadow hover:shadow" variant="outline">
-                Get Started
-              </Button>
-              <Button className="group" variant="candy">
-                Learn more <ExternalLink className="ml-2 h-4 transition-transform group-hover:translate-x-0.5" />
-              </Button>
-            </AnimatedGroup>
-          </AnimatedGroup>
-        </section>
-      </main>
-    </div>
-  );
-}
-export default HeroGrid;
