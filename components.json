@@ -41,6 +41,7 @@
         "license_key": "${LICENSE_KEY}"
       }
     },
-    "@shadcn-studio": "https://shadcnstudio.com/r/{name}.json"
+    "@shadcn-studio": "https://shadcnstudio.com/r/{name}.json",
+    "@smoothui": "https://smoothui.dev/r/{name}.json"
   }
 }
