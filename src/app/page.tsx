@@ -11,6 +11,7 @@
 // import { ComboboxMultipleDemo } from "@/components/shadcn-studio/combobox/combobox-10";
 // import HeroSectionPage from "./hero-section-25/page";
 import Header1 from "@/components/smoothui/header-1";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const Home = () => {
   // return Login();
