@@ -305,7 +305,16 @@ export const HeroHeader = () => {
                     ))}
                   </ul>
                 </div>
-                <ModeToggle />
+                <div className="m-auto hidden lg:block sm:space-y-2 sm:space-x-3">
+                  {/*<Button onClick={() => setMenuState(false)} size="sm" type="button" variant="ghost">
+                    <span>Login</span>
+                  </Button>
+                  <Button onClick={() => setMenuState(false)} size="sm" type="button">
+                    <span>Sign Up</span>
+                  </Button>*/}
+                  {/* ModeToggle*/}
+                  <ModeToggle />
+                </div>
               </div>
               <AnimatePresence>
                 {menuState && (
@@ -363,7 +372,7 @@ export const HeroHeader = () => {
                     </div>
                     <motion.div
                       animate={{ opacity: 1, y: 0 }}
-                      className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit"
+                      className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:hidden"
                       initial={{ opacity: 0, y: 10 }}
                       transition={{
                         delay: menuItems.length * STAGGER_DELAY + STAGGER_DELAY,
@@ -377,6 +386,7 @@ export const HeroHeader = () => {
                       <Button onClick={() => setMenuState(false)} size="sm" type="button">
                         <span>Sign Up</span>
                       </Button>
+                      <ModeToggle />
                     </motion.div>
                   </motion.div>
                 )}
