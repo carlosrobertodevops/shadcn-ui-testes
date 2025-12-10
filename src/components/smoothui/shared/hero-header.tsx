@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 const menuItems = [
   { id: "features", name: "Features", href: "#link" },
@@ -53,6 +54,7 @@ export const HeroHeader = () => {
                     width={140}
                   />
                 </a>
+                <ModeToggle />
                 <button
                   aria-label={menuState === true ? "Close Menu" : "Open Menu"}
                   className="-m-2.5 -mr-4 relative z-20 block cursor-pointer p-2.5 lg:hidden"
