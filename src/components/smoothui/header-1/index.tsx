@@ -10,7 +10,7 @@ import styles from "./hero-grid-01.module.css";
 
 const CELL_SIZE = 128; // px
 const COLORS = [
-  "oklch(0.72 0.2 352.53)", // blue
+  "oklch(0.72 0.2 352.53)", // blue-ish
   "#A764FF",
   "#4B94FD",
   "#FD4B4E",
@@ -82,6 +82,68 @@ function SubGrid() {
 function InteractiveGrid() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [grid, setGrid] = useState({ columns: 0, rows: 0 });
+  const [isDark, setIsDark] = useState<boolean>(true);
+
+  // Detect theme: checks both the html.dark class (used by ModeToggle) and prefers-color-scheme
+  useEffect(() => {
+    function detectDark() {
+      try {
+        const htmlHasDark =
+          document?.documentElement?.classList?.contains("dark");
+        const prefersDark =
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        setIsDark(Boolean(htmlHasDark ?? prefersDark));
+      } catch {
+        setIsDark(true);
+      }
+    }
+
+    detectDark();
+
+    // Listen to system preference changes
+    let mm: MediaQueryList | null = null;
+    try {
+      if (window.matchMedia) {
+        mm = window.matchMedia("(prefers-color-scheme: dark)");
+        const mmHandler = (e: MediaQueryListEvent) => setIsDark(e.matches);
+        if ("addEventListener" in mm) {
+          mm.addEventListener("change", mmHandler);
+        } else {
+          // old browsers
+          // @ts-ignore
+          mm.addListener(mmHandler);
+        }
+      }
+
+      // Also observe html class changes so ModeToggle (that toggles 'dark' on html) is reflected
+      const observer = new MutationObserver(() => {
+        const htmlHasDark =
+          document?.documentElement?.classList?.contains("dark");
+        setIsDark(Boolean(htmlHasDark));
+      });
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+
+      return () => {
+        if (mm) {
+          if ("removeEventListener" in mm) {
+            mm.removeEventListener("change", (evt: MediaQueryListEvent) =>
+              setIsDark(evt.matches),
+            );
+          } else {
+            // @ts-ignore
+            mm.removeListener(() => {});
+          }
+        }
+        observer.disconnect();
+      };
+    } catch {
+      // noop
+    }
+  }, []);
 
   useEffect(() => {
     function updateGrid() {
@@ -101,6 +163,54 @@ function InteractiveGrid() {
 
   const total = grid.columns * grid.rows;
 
+  // Theme-aware background values
+  const darkBackground = {
+    backgroundColor: "#0b0b0c",
+    backgroundImage: `
+      radial-gradient(circle at 50% 50%,
+        rgba(255,255,255,0.02) 0%,
+        rgba(255,255,255,0.02) 2%,
+        transparent 3%
+      ),
+      linear-gradient(to right,
+        rgba(255,255,255,0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom,
+        rgba(255,255,255,0.05) 1px,
+        transparent 1px
+      )
+    `,
+    backgroundSize: `64px 64px, 64px 64px, 64px 64px`,
+    backgroundRepeat: "repeat, repeat, repeat",
+    backgroundPosition: "0 0, 0 0, 0 0",
+  } as React.CSSProperties;
+
+  const lightBackground = {
+    // single-color light canvas + subtle dark grid lines
+    backgroundColor: "#f7f7f8",
+    backgroundImage: `
+      radial-gradient(circle at 50% 50%,
+        rgba(0,0,0,0.02) 0%,
+        rgba(0,0,0,0.02) 2%,
+        transparent 3%
+      ),
+      linear-gradient(to right,
+        rgba(0,0,0,0.06) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom,
+        rgba(0,0,0,0.06) 1px,
+        transparent 1px
+      )
+    `,
+    backgroundSize: `64px 64px, 64px 64px, 64px 64px`,
+    backgroundRepeat: "repeat, repeat, repeat",
+    backgroundPosition: "0 0, 0 0, 0 0",
+  } as React.CSSProperties;
+
+  const backgroundStyle = isDark ? darkBackground : lightBackground;
+
   return (
     <div
       aria-hidden="true"
@@ -119,26 +229,8 @@ function InteractiveGrid() {
             width: "100%",
             height: "100%",
 
-            /* 🎯 BACKGROUND DE QUADRADINHOS — IGUAL SMOOTHUI */
-            backgroundColor: "#0b0b0c",
-            backgroundImage: `
-              radial-gradient(circle at 50% 50%,
-                rgba(255,255,255,0.02) 0%,
-                rgba(255,255,255,0.02) 2%,
-                transparent 3%
-              ),
-              linear-gradient(to right,
-                rgba(255,255,255,0.05) 1px,
-                transparent 1px
-              ),
-              linear-gradient(to bottom,
-                rgba(255,255,255,0.05) 1px,
-                transparent 1px
-              )
-            `,
-            backgroundSize: `64px 64px, 64px 64px, 64px 64px`,
-            backgroundRepeat: "repeat, repeat, repeat",
-            backgroundPosition: "0 0, 0 0, 0 0",
+            // apply the theme-aware background
+            ...backgroundStyle,
           } as React.CSSProperties
         }
       >
