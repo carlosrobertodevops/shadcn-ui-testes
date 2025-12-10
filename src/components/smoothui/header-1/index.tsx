@@ -6,9 +6,9 @@ import { AnimatedGroup } from "@/components/smoothui/shared/animated-group";
 import { AnimatedText } from "@/components/smoothui/shared/animated-text";
 import { Button } from "@/components/ui/button";
 import { HeroHeader } from "@/components/smoothui/shared/hero-header";
-import styles from "./hero-grid.module.css";
+import styles from "./hero-grid-01.module.css";
 
-const CELL_SIZE = 120; // px
+const CELL_SIZE = 128; // px
 const COLORS = [
   "oklch(0.72 0.2 352.53)", // blue
   "#A764FF",
@@ -28,7 +28,7 @@ function SubGrid() {
     null,
     null,
   ]);
-  // Add refs for leave timeouts
+
   const leaveTimeouts = useRef<(NodeJS.Timeout | null)[]>([
     null,
     null,
@@ -37,7 +37,6 @@ function SubGrid() {
   ]);
 
   function handleHover(cellIdx: number) {
-    // Clear any pending timeout for this cell
     const timeout = leaveTimeouts.current[cellIdx];
     if (timeout) {
       clearTimeout(timeout);
@@ -47,20 +46,19 @@ function SubGrid() {
       prev.map((c, i) => (i === cellIdx ? getRandomColor() : c)),
     );
   }
+
   function handleLeave(cellIdx: number) {
-    // Add a small delay before removing the color
     leaveTimeouts.current[cellIdx] = setTimeout(() => {
       setCellColors((prev) => prev.map((c, i) => (i === cellIdx ? null : c)));
       leaveTimeouts.current[cellIdx] = null;
-    }, 120);
+    }, 128);
   }
-  // Cleanup on unmount
-  useEffect(
-    () => () => {
+
+  useEffect(() => {
+    return () => {
       leaveTimeouts.current.forEach((t) => t && clearTimeout(t));
-    },
-    [],
-  );
+    };
+  }, []);
 
   return (
     <div className={styles.subgrid} style={{ pointerEvents: "none" }}>
@@ -95,6 +93,7 @@ function InteractiveGrid() {
         });
       }
     }
+
     updateGrid();
     window.addEventListener("resize", updateGrid);
     return () => window.removeEventListener("resize", updateGrid);
@@ -113,11 +112,33 @@ function InteractiveGrid() {
         className={styles.mainGrid}
         style={
           {
-            gridTemplateColumns: `repeat(${grid.columns}, 1fr)`,
-            gridTemplateRows: `repeat(${grid.rows}, 1fr)`,
-            "--grid-cell-size": `${CELL_SIZE}px`,
+            gridTemplateColumns: `repeat(${grid.columns}, ${CELL_SIZE}px)`,
+            gridTemplateRows: `repeat(${grid.rows}, ${CELL_SIZE}px)`,
+            ["--grid-cell-size" as any]: `${CELL_SIZE}px`,
+
             width: "100%",
             height: "100%",
+
+            /* 🎯 BACKGROUND DE QUADRADINHOS — IGUAL SMOOTHUI */
+            backgroundColor: "#0b0b0c",
+            backgroundImage: `
+              radial-gradient(circle at 50% 50%,
+                rgba(255,255,255,0.02) 0%,
+                rgba(255,255,255,0.02) 2%,
+                transparent 3%
+              ),
+              linear-gradient(to right,
+                rgba(255,255,255,0.05) 1px,
+                transparent 1px
+              ),
+              linear-gradient(to bottom,
+                rgba(255,255,255,0.05) 1px,
+                transparent 1px
+              )
+            `,
+            backgroundSize: `64px 64px, 64px 64px, 64px 64px`,
+            backgroundRepeat: "repeat, repeat, repeat",
+            backgroundPosition: "0 0, 0 0, 0 0",
           } as React.CSSProperties
         }
       >
@@ -135,7 +156,6 @@ export function HeroGrid() {
       <HeroHeader />
       <main>
         <section className="relative overflow-hidden py-36">
-          {/* Interactive animated grid background */}
           <InteractiveGrid />
           <AnimatedGroup
             className="pointer-events-none flex flex-col items-center gap-6 text-center"
@@ -149,6 +169,7 @@ export function HeroGrid() {
                 Build your next project with{" "}
                 <span className="text-brand">Smoothui</span>
               </AnimatedText>
+
               <AnimatedText
                 as="p"
                 className="mx-auto max-w-3xl text-muted-foreground lg:text-xl"
@@ -158,6 +179,7 @@ export function HeroGrid() {
                 animated interfaces in minutes.
               </AnimatedText>
             </div>
+
             <AnimatedGroup
               className="pointer-events-auto mt-6 flex justify-center gap-3"
               preset="slide"
@@ -168,6 +190,7 @@ export function HeroGrid() {
               >
                 Get Started
               </Button>
+
               <Button className="group" variant="candy">
                 Learn more{" "}
                 <ExternalLink className="ml-2 h-4 transition-transform group-hover:translate-x-0.5" />

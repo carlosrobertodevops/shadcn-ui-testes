@@ -1,0 +1,217 @@
+/* hero-grid.module.css
+   Versão corrigida: mantém alinhamento preciso com a grade (usa --grid-cell-size)
+   e restaura totalmente:
+   - cores aplicadas inline (background definido pelo React)
+   - transições suaves ao alterar cor
+   - efeito hover + halo (sem depender de atributos data-*)
+   Substitua integralmente este arquivo no caminho:
+   src/components/smoothui/header-1/hero-grid.module.css
+*/
+
+/* Variáveis / fallback */
+:root {
+    --grid-cell-size: 120px; /* fallback se não for definido inline */
+    --grid-line-color: rgba(255, 255, 255, 0.04);
+    --grid-dot-alpha: 0.02;
+    --halo-blur: 14px;
+    --halo-opacity: 0.78;
+    --min-cell: 12px;
+}
+
+/* ---------- MAIN GRID (grade de fundo) ---------- */
+.mainGrid {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform;
+    transition: opacity 300ms ease;
+
+    background-color: #0b0b0c;
+
+    /* dot + vertical lines + horizontal lines */
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(255, 255, 255, var(--grid-dot-alpha)) 0%,
+            rgba(255, 255, 255, var(--grid-dot-alpha)) 2%,
+            rgba(0, 0, 0, 0) 3%
+        ),
+        linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+
+    background-repeat: repeat, repeat, repeat;
+    background-size:
+        var(--grid-cell-size) var(--grid-cell-size),
+        var(--grid-cell-size) var(--grid-cell-size),
+        var(--grid-cell-size) var(--grid-cell-size);
+    background-position:
+        0 0,
+        0 0,
+        0 0;
+    background-blend-mode: overlay, normal, normal;
+}
+
+/* ---------- SUBGRID: cada tile com 2x2 células com tamanho fixo ---------- */
+.subgrid {
+    position: relative;
+    width: var(--grid-cell-size);
+    height: var(--grid-cell-size);
+
+    /* força tamanhos fixos (metade da tile) para eliminar arredondamento */
+    display: grid;
+    grid-template-columns: calc(var(--grid-cell-size) / 2) calc(
+            var(--grid-cell-size) / 2
+        );
+    grid-template-rows: calc(var(--grid-cell-size) / 2) calc(
+            var(--grid-cell-size) / 2
+        );
+
+    box-sizing: border-box;
+    user-select: none;
+    gap: 0;
+    padding: 0;
+    pointer-events: none; /* o subgrid em si não recebe eventos; os botões (cells) sim */
+    overflow: visible;
+}
+
+/* desenha linhas finas (visual) sem afetar layout usando pseudo-elemento */
+.subgrid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    box-shadow:
+        inset -1px 0 0 0 var(--grid-line-color),
+        inset 0 -1px 0 0 var(--grid-line-color);
+}
+
+/* ---------- CELULAS: tamanhos fixos, cores aplicadas inline (background) ---------- */
+.cell {
+    box-sizing: border-box;
+    width: calc(var(--grid-cell-size) / 2);
+    height: calc(var(--grid-cell-size) / 2);
+    background: transparent; /* geralmente será sobrescrito pelo inline style do React */
+    transition:
+        background 360ms cubic-bezier(0.2, 0.9, 0.3, 1),
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        opacity 160ms ease;
+    pointer-events: auto;
+    position: relative;
+    cursor: pointer;
+    display: block;
+    z-index: 5;
+    border-radius: 0; /* keep square per tile */
+    overflow: visible;
+}
+
+/* pequenas bordas visuais entre células (usadas apenas como referência estética) */
+.cell:nth-child(1) {
+    /* top-left */
+}
+.cell:nth-child(2) {
+    /* top-right */
+}
+.cell:nth-child(3) {
+    /* bottom-left */
+}
+.cell:nth-child(4) {
+    /* bottom-right */
+}
+
+/* ---------- HALO (usa a cor de fundo aplicada inline via background) ---------- */
+.cell::after {
+    content: "";
+    position: absolute;
+    inset: -8%;
+    border-radius: 6px;
+    background: inherit; /* herdará a cor definida inline (background) */
+    filter: blur(var(--halo-blur));
+    opacity: 0;
+    transform: scale(1);
+    transition:
+        opacity 160ms ease,
+        transform 160ms ease;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* força que o próprio background seja visível (quando inline define cor) */
+/* Não precisa de seletores complexos — o estilo inline já define background. */
+
+/* hover: mostra halo + elevação e leve brilho */
+.cell:hover::after {
+    opacity: var(--halo-opacity);
+    transform: scale(1.02);
+}
+.cell:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+/* ---------- Mantém pequenas decorações internas opcionais ---------- */
+.cell .cellDot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    right: 8%;
+    bottom: 8%;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.04);
+    z-index: 6;
+    transition:
+        transform 120ms ease,
+        background 120ms ease;
+}
+.cell:hover .cellDot {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* ---------- HERO overlay containers (mantém como no original) ---------- */
+.heroContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+}
+.heroButtons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    width: auto;
+}
+
+/* ---------- Responsivo: reduz grid-cell-size em telas menores (mantém alinhamento) ---------- */
+@media (max-width: 1024px) {
+    :root {
+        --grid-cell-size: 96px;
+    }
+}
+@media (max-width: 640px) {
+    :root {
+        --grid-cell-size: 72px;
+    }
+}
+
+/* reduz motion se preferências do usuário pedirem */
+@media (prefers-reduced-motion: reduce) {
+    .cell {
+        transition: none !important;
+        transform: none !important;
+    }
+    .mainGrid {
+        transition: none !important;
+    }
+}

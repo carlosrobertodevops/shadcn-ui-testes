@@ -11,7 +11,6 @@ const menuItems = [
   { id: "pricing", name: "Pricing", href: "#link" },
   { id: "about", name: "About", href: "#link" },
 ];
-
 // Animation constants
 const ANIMATION_DURATION = 0.2;
 const STAGGER_DELAY = 0.05;
@@ -30,10 +29,8 @@ const SCALE_MIN = 0;
 const SCALE_MAX = 1;
 const TRANSLATE_Y_OFFSET = -10;
 const TRANSLATE_X_OFFSET = -10;
-
 export const HeroHeader = () => {
   const [menuState, setMenuState] = useState(false);
-
   return (
     <div className="relative">
       <header>
@@ -56,7 +53,6 @@ export const HeroHeader = () => {
                     width={140}
                   />
                 </a>
-
                 <button
                   aria-label={menuState === true ? "Close Menu" : "Open Menu"}
                   className="-m-2.5 -mr-4 relative z-20 block cursor-pointer p-2.5 lg:hidden"
@@ -109,7 +105,6 @@ export const HeroHeader = () => {
                     )}
                   </AnimatePresence>
                 </button>
-
                 <div className="m-auto hidden size-fit lg:block">
                   <ul className="flex gap-1">
                     {menuItems.map((item) => (
@@ -124,7 +119,6 @@ export const HeroHeader = () => {
                   </ul>
                 </div>
               </div>
-
               <AnimatePresence>
                 {menuState && (
                   <motion.div

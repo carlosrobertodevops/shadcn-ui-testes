@@ -1,8 +1,11 @@
 "use client";
 
-import { getImageKitUrl } from "@smoothui/data";
+import { getImageKitUrl } from "@/components/smoothui/data";
 import { motion } from "motion/react";
-import { AnimatedGroup, AnimatedText, Button, HeroHeader } from "../shared";
+import { AnimatedGroup } from "@/components/smoothui/shared/animated-group";
+import { AnimatedText } from "@/components/smoothui/shared/animated-text";
+import { Button } from "@/components/ui/button";
+import { HeroHeader } from "@/components/smoothui/shared/hero-header";
 
 type HeroProductProps = {
   badgeText?: string;
