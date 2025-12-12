@@ -14,7 +14,7 @@ const buttonVariants = cva(
         outline:
           "border border-transparent bg-background shadow-black/15 shadow-sm ring-1 ring-foreground/10 hover:bg-primary/20 dark:ring-foreground/15",
         secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
-        ghost: "hover:bg-background hover:text-foreground hover:shadow-custom",
+        ghost: "hover:bg-background hover:text-foreground shadow-xs hover:bg-primary/90", // hover:shadow-custom",
         link: "text-primary underline-offset-4 hover:underline",
         candy:
           "border-[0.5px] border-white/25 bg-gradient-to-b from-brand to-brand-secondary text-shadow-sm shadow-black/20 shadow-md ring-(--ring-color) ring-1 [--ring-color:color-mix(in_oklab,var(--color-foreground)15%,var(--color-brand))] hover:from-brand-secondary hover:to-brand-secondary [&_svg]:drop-shadow-sm",
