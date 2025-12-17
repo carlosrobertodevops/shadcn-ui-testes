@@ -10,7 +10,10 @@
 // import { Login } from "@/components/shadcn-studio/blocks/login-page-02/login-page-02";
 // import { ComboboxMultipleDemo } from "@/components/shadcn-studio/combobox/combobox-10";
 // import HeroSectionPage from "./hero-section-25/page";
-import Header1 from "@/components/smoothui/header-1";
+// import Header1 from "@/components/smoothui/header-1";
+// import { Login } from "@/components/shadcn-studio/blocks/login-page-02/login-page-02";
+
+import { ForgotPassword } from "@/components/shadcn-studio/blocks/forgot-password-03/forgot-password-03";
 
 const Home = () => {
   // return Login();
@@ -18,11 +21,13 @@ const Home = () => {
   // return ComboboxMultipleDemo();
   // return HeroSectionPage();
   // return <HeroSectionPage />;
-  return (
-    <div className="h-full w-full">
-      <Header1 />
-    </div>
-  );
+  return ForgotPassword();
+  // return (
+  //   <div className="h-full w-full">
+  //     {/*<ForgotPassword />*/}
+  //     ForgotPassword();
+  //   </div>
+  // );
   // return (
   //     <div className="flex items-center justify-center min-h-screen">
   //         <HeroSectionPage />
